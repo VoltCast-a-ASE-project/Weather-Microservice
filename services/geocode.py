@@ -42,7 +42,8 @@ async def get_location(street: str, housenumber: str, city: str, postalcode: str
         if location.house_number is not None
     ]
     if len(filtered) == 0:
-        raise ExternalApiError("No valid locations found (no house number)")
+        #raise ExternalApiError("No valid locations found (no house number)")
+        return [] #return empty list, so the frontend can easily differ between error and no result
     # TODO: maybe save data if there is only one entry = result
 
     # map for minimal shipping
