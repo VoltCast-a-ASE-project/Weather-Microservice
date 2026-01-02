@@ -2,7 +2,7 @@ import httpx
 
 from core.errors import ExternalApiError
 from mapper.geocode import map_raw_to_location_list, map_location_list_to_simple_location
-from models.geocode import SimpleLocation
+from models.geocode import SimpleLocation, LocationRequest
 from .config import GEOCODE_DEFAULT_PARAMS
 from .utils import build_geocode_params
 import logging
@@ -11,8 +11,8 @@ BASE_URL = "https://nominatim.openstreetmap.org/search"
 #logging.basicConfig(level=logging.INFO)
 #logger = logging.getLogger(__name__)
 
-async def get_location(street: str, housenumber: str, city: str, postalcode: str, country: str | None = None) -> list[SimpleLocation]:
-    params = build_geocode_params(street, housenumber, city, postalcode, country)
+async def get_location(input: LocationRequest) -> list[SimpleLocation]:
+    params = build_geocode_params(input.street, input.houseNumber, input.city, input.postalCode, input.country)
     #full_url = httpx.URL(BASE_URL, params=params)
     #logger.info(f"Sending request to Nominatim: {full_url}")
     try:

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class SimpleLocation(BaseModel):
     name: str
@@ -13,3 +14,10 @@ class Location(BaseModel):
 
 class LocationList(BaseModel):
     locations: list[Location]
+
+class LocationRequest(BaseModel):
+    street: str
+    houseNumber: str
+    city: str
+    postalCode: str
+    country: Optional[str] = None

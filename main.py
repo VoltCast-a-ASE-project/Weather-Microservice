@@ -1,8 +1,9 @@
 from fastapi import FastAPI, Query
 from httpx import Request
 from starlette.responses import JSONResponse
-
+from fastapi import Body
 from core.errors import MappingError, ExternalApiError
+from models.geocode import LocationRequest
 from services.geocode import get_location
 
 app = FastAPI(title="Weather & Location Microservice")
@@ -11,18 +12,13 @@ app = FastAPI(title="Weather & Location Microservice")
 async def root():
     return {"message": "Hello, Weather Microservice!"}
 
-@app.get("/location")
-async def location_route(
-        street: str = Query(..., description="Street address"),
-        housenumber: str = Query(..., description="House number"),
-        city: str = Query(..., description="City name"),
-        postalcode: str = Query(..., description="Postal code"),
-        country: str | None = Query(None, description="Country name")
-):
-    """
-    Example: /location?street=mystreet&housenumber=myhousenumber&city=mycity
-    """
-    return await get_location(street, housenumber, city, postalcode, country)
+@app.post("/location")
+async def location_route(data: LocationRequest = Body(...)):
+
+    result = await get_location(data)
+    #logger.info(f"Sending result to client: {result}")
+    return result
+
 
 @app.exception_handler(MappingError)
 async def mapping_error_handler(request: Request, exc: MappingError):
