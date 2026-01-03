@@ -3,23 +3,41 @@ from httpx import Request
 from starlette.responses import JSONResponse
 from fastapi import Body
 from core.errors import MappingError, ExternalApiError
-from models.geocode import LocationRequest
-from services.geocode import get_location
+from models.geocode import LocationRequest, SimpleLocation, UserLocation, User
+from services.geocode import search_location
+import sqlite3
+from Database import Database
 
 app = FastAPI(title="Weather & Location Microservice")
+db = Database()
+
+@app.on_event("startup")
+def setup_db_at_startup():
+    db.setup_db()  # creates tables once at startup
 
 @app.get("/")
 async def root():
     return {"message": "Hello, Weather Microservice!"}
 
-@app.post("/location")
-async def location_route(data: LocationRequest = Body(...)):
-
-    result = await get_location(data)
+@app.post("/location/search")
+async def search_location_route(data: LocationRequest = Body(...)):
+    result = await search_location(data)
     #logger.info(f"Sending result to client: {result}")
     return result
 
+@app.put("/location")
+async def set_location_route(data: UserLocation = Body(...)):
+    db.save_location(data.username, data.location)
+    return {"status": "success", "location": data.location.model_dump()}
 
+@app.post("/location")
+async def get_location_route(data: User = Body(...)):
+    location = db.get_location(data.username)
+    if location is None:
+        return {"status": "error", "message": "no location found"}
+    return {"status": "success", "location": location.model_dump()}
+
+# Error handling:
 @app.exception_handler(MappingError)
 async def mapping_error_handler(request: Request, exc: MappingError):
     return JSONResponse(
@@ -32,4 +50,11 @@ async def mapping_error_handler(request: Request, exc: ExternalApiError):
     return JSONResponse(
         status_code=503,
         content={"error": "ExternalApiError", "message": str(exc)}
+    )
+
+@app.exception_handler(sqlite3.DatabaseError)
+async def db_exception_handler(request: Request, exc: sqlite3.DatabaseError):
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "A database error occurred", "error": str(exc)}
     )

@@ -21,3 +21,11 @@ class LocationRequest(BaseModel):
     city: str
     postalCode: str
     country: Optional[str] = None
+
+class UserLocation(BaseModel):
+    username: str
+    location: SimpleLocation
+
+class User(BaseModel):
+    username: str
+
