@@ -7,6 +7,7 @@ from models.geocode import LocationRequest, SimpleLocation, UserLocation, User
 from services.geocode import search_location
 import sqlite3
 from Database import Database
+from services.weather import get_overview, get_hourly_data, get_daily_data
 
 app = FastAPI(title="Weather & Location Microservice")
 db = Database()
@@ -18,6 +19,18 @@ def setup_db_at_startup():
 @app.get("/")
 async def root():
     return {"message": "Hello, Weather Microservice!"}
+
+@app.post("/weather/overview")
+async def get_overview_route(location: SimpleLocation = Body(...)):
+    return await get_overview(location.lat, location.lon)
+
+@app.post("/weather/forecast/hourly")
+async def get_overview_route(location: SimpleLocation = Body(...)):
+    return await get_hourly_data(location.lat, location.lon)
+
+@app.post("/weather/forecast/daily")
+async def get_overview_route(location: SimpleLocation = Body(...)):
+    return await get_daily_data(location.lat, location.lon)
 
 @app.post("/location/search")
 async def search_location_route(data: LocationRequest = Body(...)):
