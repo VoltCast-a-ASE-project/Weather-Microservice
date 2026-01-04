@@ -1,9 +1,6 @@
 import openmeteo_requests
-
-import pandas as pd
 import requests_cache
 from retry_requests import retry
-
 from mapper.weather import map_openmeteo_overview, map_openmeteo_hourly_forecast, map_openmeteo_daily_forecast
 from models.weather import WeatherOverview, HourlyWeatherData, DailyWeatherData
 
@@ -53,40 +50,6 @@ async def api_call_daily_forecast(lat: float, lon: float):
 	responses = daily_forecast_client.weather_api(BASE_URL, params=params)
 	return responses[0]
 
-'''
-params3 = {
-	"latitude": 46.6024721,
-	"longitude": 13.82663,
-	"daily": ["weather_code", "temperature_2m_mean", "rain_sum", "snowfall_sum", "wind_gusts_10m_max"],
-	"timezone": "auto",
-}
-responses3 = openmeteo.weather_api(url, params=params3)
-
-# Process first location. Add a for-loop for multiple locations or weather models
-response3 = responses3[0]
-daily = response3.Daily()
-daily_weather_code = daily.Variables(0).ValuesAsNumpy()
-daily_temperature_2m_mean = daily.Variables(1).ValuesAsNumpy()
-daily_rain_sum = daily.Variables(2).ValuesAsNumpy()
-daily_snowfall_sum = daily.Variables(3).ValuesAsNumpy()
-daily_wind_gusts_10m_max = daily.Variables(4).ValuesAsNumpy()
-
-daily_data = {"date": pd.date_range(
-	start = pd.to_datetime(daily.Time(), unit = "s", utc = True),
-	end =  pd.to_datetime(daily.TimeEnd(), unit = "s", utc = True),
-	freq = pd.Timedelta(seconds = daily.Interval()),
-	inclusive = "left"
-)}
-
-daily_data["weather_code"] = daily_weather_code
-daily_data["temperature_2m_mean"] = daily_temperature_2m_mean
-daily_data["rain_sum"] = daily_rain_sum
-daily_data["snowfall_sum"] = daily_snowfall_sum
-daily_data["wind_gusts_10m_max"] = daily_wind_gusts_10m_max
-
-daily_dataframe = pd.DataFrame(data = daily_data)
-print("\nDaily data\n", daily_dataframe)
-'''
 async def get_overview(lat: float, lon: float) -> WeatherOverview :
 	response = await api_call_overview(lat, lon)
 	return map_openmeteo_overview(response)
