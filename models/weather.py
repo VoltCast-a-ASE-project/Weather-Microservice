@@ -42,4 +42,4 @@ class DayWeatherData(BaseModel):
     wind_gust_max: float
 
 class DailyWeatherData(BaseModel):
-    daily: list[DayWeatherData]
+    days: list[DayWeatherData]

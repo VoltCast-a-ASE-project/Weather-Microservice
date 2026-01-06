@@ -103,7 +103,7 @@ def map_openmeteo_daily_forecast(response) -> DailyWeatherData:
         inclusive="left"
     )
 
-    daily: list[DayWeatherData] = []
+    days: list[DayWeatherData] = []
 
     for i, timestamp in enumerate(daily_data):
         dayEntry = DayWeatherData(
@@ -115,8 +115,8 @@ def map_openmeteo_daily_forecast(response) -> DailyWeatherData:
             snowfall=float(daily_snowfall_sum[i]), # Maybe unit conversion
             wind_gust_max=float(daily_wind_gusts_10m_max[i]),
         )
-        daily.append(dayEntry)
+        days.append(dayEntry)
 
-    return DailyWeatherData(daily=daily)
+    return DailyWeatherData(days=days)
 
 
