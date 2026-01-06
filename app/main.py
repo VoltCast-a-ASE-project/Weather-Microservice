@@ -16,7 +16,7 @@ db = Database()
 def setup_db_at_startup():
     db.setup_db()  # creates tables once at startup
 
-@app.get("/")
+@app.get("/weather")
 async def root():
     return {"message": "Hello, Weather Microservice!"}
 
