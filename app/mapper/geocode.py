@@ -1,5 +1,5 @@
-from core.errors import MappingError
-from models.geocode import SimpleLocation, Location
+from app.core.errors import MappingError
+from app.models.geocode import SimpleLocation, Location
 
 
 def map_raw_to_location_list(raw_data: list[dict]) -> list[Location]:

@@ -1,8 +1,8 @@
 import openmeteo_requests
 import requests_cache
 from retry_requests import retry
-from mapper.weather import map_openmeteo_overview, map_openmeteo_hourly_forecast, map_openmeteo_daily_forecast
-from models.weather import WeatherOverview, HourlyWeatherData, DailyWeatherData
+from app.mapper.weather import map_openmeteo_overview, map_openmeteo_hourly_forecast, map_openmeteo_daily_forecast
+from app.models.weather import WeatherOverview, HourlyWeatherData, DailyWeatherData
 
 BASE_URL = "https://api.open-meteo.com/v1/forecast"
 

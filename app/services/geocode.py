@@ -1,7 +1,7 @@
 import httpx
-from core.errors import ExternalApiError
-from mapper.geocode import map_raw_to_location_list, map_location_list_to_simple_location
-from models.geocode import SimpleLocation, LocationRequest
+from app.core.errors import ExternalApiError
+from app.mapper.geocode import map_raw_to_location_list, map_location_list_to_simple_location
+from app.models.geocode import SimpleLocation, LocationRequest
 from .utils import build_geocode_params
 
 BASE_URL = "https://nominatim.openstreetmap.org/search"

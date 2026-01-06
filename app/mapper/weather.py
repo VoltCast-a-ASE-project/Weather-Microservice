@@ -1,8 +1,8 @@
 import pandas as pd
 import pytz
 
-from models.weather import *
-from models.weatherCodes import map_weather_code
+from app.models.weather import *
+from app.models.weatherCodes import map_weather_code
 
 def map_openmeteo_overview(response) -> WeatherOverview:
     current = response.Current()
