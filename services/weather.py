@@ -27,7 +27,6 @@ hourly_params = {
 }
 daily_params = {
 	"daily": ["weather_code", "temperature_2m_mean", "rain_sum", "snowfall_sum", "wind_gusts_10m_max"],
-	"timezone": "auto",
 }
 async def api_call_overview(lat: float, lon: float):
 	params = overview_params.copy()
