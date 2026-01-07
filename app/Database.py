@@ -1,7 +1,7 @@
 import sqlite3
 from pydantic import TypeAdapter
 
-from models.geocode import SimpleLocation
+from app.models.geocode import SimpleLocation
 
 
 class Database:
