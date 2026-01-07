@@ -1,7 +1,7 @@
 services:
   weatherservice-ms:
     build: .
-    image: ghcr.io/voltcast-a-ase-project/fronius-microservice/weatherservice-ms:latest
+    image: ghcr.io/voltcast-a-ase-project/weatherservice-microservice/weatherservice-ms:latest
     networks:
       - VoltCast_Network
     ports:
