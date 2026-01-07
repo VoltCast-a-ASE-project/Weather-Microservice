@@ -102,7 +102,7 @@ async def test_exception_handlers(monkeypatch):
     from app.core.errors import MappingError, ExternalApiError
 
     # Test MappingError handler
-    resp = client.get("/weather")  # normal route
+    resp = client.get("/weather/hello")  # normal route
     assert resp.status_code == 200
 
     # Manually trigger MappingError via endpoint
