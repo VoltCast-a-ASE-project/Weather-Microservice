@@ -1,0 +1,14 @@
+services:
+  weatherservice-ms:
+    build: .
+    image: ghcr.io/voltcast-a-ase-project/fronius-microservice/weatherservice-ms:latest
+    networks:
+      - VoltCast_Network
+    ports:
+      - "8086:8086"
+    expose:
+      - "8086"
+
+networks:
+  VoltCast_Network:
+    external: true
