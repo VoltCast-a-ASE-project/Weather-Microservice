@@ -56,7 +56,7 @@ async def test_location_search_route(monkeypatch):
     async_mock_search = AsyncMock(return_value=[{"name": "Test Place"}])
     monkeypatch.setattr("app.main.search_location", async_mock_search)
 
-    resp = client.post("/location/search", json=LOCATION_REQUEST)
+    resp = client.post("/weather/location/search", json=LOCATION_REQUEST)
     assert resp.status_code == 200
     assert resp.json() == [{"name": "Test Place"}]
     async_mock_search.assert_awaited_once()
@@ -70,7 +70,7 @@ async def test_set_and_get_location_routes(monkeypatch):
     monkeypatch.setattr("app.main.db.get_location", mock_get)
 
     # Test set_location
-    resp = client.put("/location", json=USER_LOCATION)
+    resp = client.put("/weather/location", json=USER_LOCATION)
     assert resp.status_code == 200
     assert resp.json() == {"status": "success", "location": SIMPLE_LOCATION}
 
@@ -82,7 +82,7 @@ async def test_set_and_get_location_routes(monkeypatch):
     assert saved_location.model_dump() == SIMPLE_LOCATION
 
     # Test get_location
-    resp = client.post("/location", json=USER)
+    resp = client.post("/weather/location", json=USER)
     assert resp.status_code == 200
     assert resp.json() == {"status": "success", "location": SIMPLE_LOCATION}
 
@@ -93,7 +93,7 @@ async def test_get_location_no_result(monkeypatch):
     # Mock db.get_location to return None
     monkeypatch.setattr("app.main.db.get_location", MagicMock(return_value=None))
 
-    resp = client.post("/location", json=USER)
+    resp = client.post("/weather/location", json=USER)
     assert resp.status_code == 200
     assert resp.json() == {"status": "error", "message": "no location found"}
 
