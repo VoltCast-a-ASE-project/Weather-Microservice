@@ -32,18 +32,18 @@ async def get_hourly_route(location: SimpleLocation = Body(...)):
 async def get_daily_route(location: SimpleLocation = Body(...)):
     return await get_daily_data(location.lat, location.lon)
 
-@app.post("/location/search")
+@app.post("/weather/location/search")
 async def search_location_route(data: LocationRequest = Body(...)):
     result = await search_location(data)
     #logger.info(f"Sending result to client: {result}")
     return result
 
-@app.put("/location")
+@app.put("/weather/location")
 async def set_location_route(data: UserLocation = Body(...)):
     db.save_location(data.username, data.location)
     return {"status": "success", "location": data.location.model_dump()}
 
-@app.post("/location")
+@app.post("/weather/location")
 async def get_location_route(data: User = Body(...)):
     location = db.get_location(data.username)
     if location is None:
